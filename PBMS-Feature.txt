@@ -1,4 +1,4 @@
-ENG version:
+ENG ver:
 HOME
 
 ├── Authentication
@@ -8,7 +8,6 @@ HOME
 │   └── Unauthorized / Error Page (Handle invalid access and system errors)
 
 ├── Public Information
-│   ├── Parking Availability (Display available parking slots by floor or zone)
 │   ├── Pricing & Policies (View parking fees and parking regulations)
 │   ├── Vehicle Types (Display supported vehicle categories)
 │   └── Support & Feedback (Submit support requests or feedback)
@@ -18,6 +17,7 @@ HOME
 │   ├── User Dashboard (Provide an overview of user parking activities)
 
 │   ├── Parking Booking
+│   │   ├── Parking Availability (Display available parking slots by floor or zone)
 │   │   ├── View Parking Map (Display the parking layout by floor or zone)
 │   │   ├── View Available Slots (Show currently available parking slots)
 │   │   ├── Select Vehicle Type (Choose vehicle category for parking)
@@ -144,8 +144,8 @@ HOME
         ├── Error Logs (Track system errors and failures)
         ├── Activity Logs (Track user activities)
         └── System Health (Monitor overall system performance and status)
-----------------------------------------------------------------------------------------------------    
-VIE version:
+---------------------------------------------------------------------------------------------
+Viet ver:
 HOME
 
 ├── Xác thực hệ thống
@@ -155,7 +155,6 @@ HOME
 │   └── Trang lỗi / Không có quyền truy cập (Xử lý truy cập không hợp lệ và lỗi hệ thống)
 
 ├── Thông tin công khai
-│   ├── Tình trạng bãi xe (Hiển thị số lượng slot còn trống theo tầng hoặc khu vực)
 │   ├── Bảng giá & Quy định (Xem phí gửi xe và các quy định của bãi xe)
 │   ├── Loại phương tiện (Hiển thị các loại phương tiện được hỗ trợ)
 │   └── Hỗ trợ & Phản hồi (Gửi yêu cầu hỗ trợ hoặc phản hồi dịch vụ)
@@ -165,6 +164,7 @@ HOME
 │   ├── Trang tổng quan người dùng (Hiển thị tổng quan hoạt động gửi xe của người dùng)
 
 │   ├── Đặt chỗ gửi xe
+│   │   ├── Tình trạng bãi xe (Hiển thị số lượng slot còn trống theo tầng hoặc khu vực)
 │   │   ├── Xem sơ đồ bãi xe (Hiển thị sơ đồ bãi xe theo tầng hoặc khu vực)
 │   │   ├── Xem slot còn trống (Hiển thị các vị trí đỗ xe còn trống)
 │   │   ├── Chọn loại phương tiện (Chọn loại phương tiện cần gửi)
