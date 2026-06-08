@@ -236,7 +236,6 @@ Purpose: lưu tòa nhà gửi xe.
 | Column | Type | Constraints | Meaning |
 |---|---|---|---|
 | building_id | int | PK, AUTO GENERATED, NOT NULL | ID tòa nhà |
-| building_code | varchar(20) | NOT NULL, UNIQUE | Mã tòa nhà |
 | building_name | varchar(50) | NOT NULL | Tên tòa nhà |
 | address | varchar(100) | NULL | Địa chỉ |
 | total_floor | int | NOT NULL | Tổng số tầng |
@@ -263,20 +262,7 @@ Generic constraints:
 
 ---
 
-#### 3.7 `vehicle_type`
-
-Purpose: lưu loại phương tiện.
-
-| Column | Type | Constraints | Meaning |
-|---|---|---|---|
-| vehicle_type_id | int | PK, AUTO GENERATED, NOT NULL | ID loại xe |
-| type_name | varchar(50) | NOT NULL, UNIQUE | Tên loại xe |
-| description | varchar(100) | NULL | Mô tả |
-| vehicle_type_status | varchar(20) | NOT NULL | Trạng thái loại xe |
-
----
-
-#### 3.8 `zone`
+#### 3.7 `zone`
 
 Purpose: lưu khu vực đỗ xe trong tầng.
 
@@ -297,7 +283,7 @@ Generic constraints:
 
 ---
 
-#### 3.9 `parking_slot`
+#### 3.8 `parking_slot`
 
 Purpose: lưu vị trí đỗ cụ thể, đặc biệt quan trọng với ô tô booking và ô tô thẻ tháng.
 
@@ -318,6 +304,19 @@ Generic constraints:
 
 ---
 
+#### 3.9 `vehicle_type`
+
+Purpose: lưu loại phương tiện.
+
+| Column | Type | Constraints | Meaning |
+|---|---|---|---|
+| vehicle_type_id | int | PK, AUTO GENERATED, NOT NULL | ID loại xe |
+| type_name | varchar(50) | NOT NULL, UNIQUE | Tên loại xe |
+| description | varchar(100) | NULL | Mô tả |
+| vehicle_type_status | varchar(20) | NOT NULL | Trạng thái loại xe |
+
+---
+
 #### 3.10 `vehicle`
 
 Purpose: lưu xe thuộc account.
@@ -329,7 +328,7 @@ Purpose: lưu xe thuộc account.
 | vehicle_type_id | int | FK -> vehicle_type.vehicle_type_id, NOT NULL | Loại xe |
 | license_plate | varchar(20) | NOT NULL, UNIQUE | Biển số xe |
 | registered_day | date | NULL | Ngày đăng ký xe trong hệ thống |
-| vehicle_status | varchar(20) | NOT NULL | Trạng thái xe |
+| vehicle_status | varchar(20) | NOT NULL | Trạng thái xe trên hệ thống |
 
 ---
 
@@ -343,7 +342,7 @@ Purpose: lưu mã thẻ/mã gửi xe mô phỏng.
 | card_code | varchar(20) | NOT NULL, UNIQUE | Mã card nội bộ |
 | rfid_code | varchar(50) | NULL, UNIQUE | Mã RFID mô phỏng nếu có |
 | card_type | varchar(20) | NOT NULL | Loại card |
-| card_status | varchar(20) | NOT NULL | AVAILABLE, ACTIVE, LOST, BLOCKED |
+| card_status | varchar(20) | NOT NULL | Trạng thái thẻ xe |
 
 ---
 
@@ -366,7 +365,7 @@ Purpose: lưu lượt gửi xe từ check-in đến check-out.
 | check_out_time | timestamp | NULL | Thời điểm ra |
 | license_plate_in | varchar(20) | NOT NULL | Biển số lúc vào |
 | license_plate_out | varchar(20) | NULL | Biển số lúc ra |
-| session_status | varchar(20) | NOT NULL | ACTIVE, COMPLETED, LOST, EXPIRED, DOWNGRADED |
+| session_status | varchar(20) | NOT NULL | ATrạng thái vòng đời lượt gửi xe |
 
 Generic constraints:
 
@@ -403,7 +402,7 @@ Purpose: lưu sự cố phát sinh trong session.
 | incident_type_id | int | FK -> incident_type.incident_type_id, NOT NULL | Loại sự cố |
 | description | varchar(100) | NULL | Mô tả |
 | penalty_fee | decimal(18,2) | NULL | Phí phạt |
-| incident_status | varchar(20) | NOT NULL | OPEN, PROCESSING, RESOLVED, CANCELLED |
+| incident_status | varchar(20) | NOT NULL | Trạng thái incident |
 | created_at | timestamp | NOT NULL | Thời điểm tạo |
 | resolved_at | timestamp | NULL | Thời điểm xử lý xong |
 
@@ -420,7 +419,6 @@ Purpose: lưu bản ghi chặn vehicle, card hoặc incident.
 | card_id | int | FK -> card.card_id, NULL | Card bị chặn |
 | incident_id | int | FK -> incident.incident_id, NULL | Sự cố dẫn tới blacklist |
 | reason | varchar(100) | NOT NULL | Lý do chặn |
-| blacklist_status | varchar(20) | NOT NULL | ACTIVE, INACTIVE, RESOLVED |
 | created_at | timestamp | NOT NULL | Thời điểm tạo |
 
 Generic constraints:
@@ -445,7 +443,7 @@ Purpose: lưu đặt chỗ trước.
 | planned_checkin_time | timestamp | NOT NULL | Giờ dự kiến vào |
 | planned_checkout_time | timestamp | NOT NULL | Giờ dự kiến ra |
 | deposit_amount | decimal(18,2) | NOT NULL | Deposit Fee bằng giá của block đầu tiên theo bảng giá hiện hành |
-| booking_status | varchar(20) | NOT NULL | PENDING, CONFIRMED, CANCELLED, COMPLETED |
+| booking_status | varchar(20) | NOT NULL | Trạng thái quy trình booking. |
 | payment_deadline | timestamp | NOT NULL | Hạn thanh toán cọc |
 | checkin_grace_until | timestamp | NOT NULL | Hạn check-in sau grace time |
 | cancelled_at | timestamp | NULL | Thời điểm hủy |
@@ -477,11 +475,9 @@ Purpose: lưu vé tháng/gói gửi xe định kỳ.
 | account_id | int | FK -> account.account_id, NOT NULL | Chủ thẻ |
 | vehicle_id | int | FK -> vehicle.vehicle_id, NOT NULL | Xe đăng ký |
 | vehicle_type_id | int | FK -> vehicle_type.vehicle_type_id, NOT NULL | Loại xe |
-| pricing_policy_id | int | FK -> pricing_policy.pricing_policy_id, NOT NULL | Chính sách giá thẻ tháng |
 | assigned_slot_id | int | FK -> parking_slot.slot_id, NULL | Slot riêng cho ô tô thẻ tháng |
 | building_id | int | FK -> building.building_id, NOT NULL | Tòa nhà áp dụng |
 | monthly_price | decimal(18,2) | NOT NULL | Giá thẻ tháng |
-| allow_overnight | int | NOT NULL, DEFAULT 0 | Có cho qua đêm không, 0/1 |
 | activated_at | timestamp | NOT NULL | Thời điểm kích hoạt |
 | expired_at | timestamp | NOT NULL | Thời điểm hết hạn |
 | monthly_card_status | varchar(20) | NOT NULL | PENDING, ACTIVE, EXPIRED, DOWNGRADED, CANCELLED |
@@ -489,7 +485,6 @@ Purpose: lưu vé tháng/gói gửi xe định kỳ.
 
 Generic constraints:
 
-- `CHECK(allow_overnight IN (0, 1))`
 - Xe máy thẻ tháng không cần `assigned_slot_id`.
 - Ô tô thẻ tháng cần `assigned_slot_id`.
 - Mỗi monthly card chỉ áp dụng cho một `vehicle_id`.
@@ -620,7 +615,6 @@ Purpose: lưu thông báo gửi đến account.
 | account_id | int | FK -> account.account_id, NOT NULL | Người nhận |
 | title | varchar(100) | NOT NULL | Tiêu đề |
 | message | varchar(100) | NOT NULL | Nội dung |
-| notification_status | varchar(20) | NOT NULL | Trạng thái thông báo |
 
 ---
 

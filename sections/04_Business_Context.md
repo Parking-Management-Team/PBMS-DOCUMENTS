@@ -198,7 +198,6 @@ sức chứa, xe ra phải được thanh toán và cập nhật trạng thái.
 | Thanh toán thất bại                       | Thẻ tháng không được kích hoạt.                 |
 | Thẻ tháng hết hạn                         | Không áp dụng quyền lợi thẻ tháng khi check-in. |
 | Vé tháng hết hạn khi xe vẫn còn trong bãi | Hệ thống downgrade vé tháng và tính phí vãng lai từ thời điểm hết hạn. |
-| Vé tháng không cho phép gửi qua đêm nhưng xe gửi qua đêm | Hệ thống xử lý theo chính sách phát sinh/phạt hoặc chuyển sang tính phí vãng lai. |
 | Muốn dùng cùng một vé tháng cho xe khác | Hệ thống từ chối vì mỗi vé tháng chỉ áp dụng cho một xe đã đăng ký. |
 
 ### 4.5.3 Check-in Workflow

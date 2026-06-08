@@ -26,7 +26,7 @@ phân bổ chỗ đỗ, tính phí, thanh toán và theo dõi trạng thái bãi
 | Payment Management                  | Hỗ trợ tiền mặt và thanh toán online thật qua ngân hàng; không hỗ trợ thanh toán thẻ.                                                                                |
 | Fee Calculation                     | Tính phí theo thời gian thực tế sử dụng, loại xe, từng pricing window, base duration, base price, block phát sinh và window cap.                                     |
 | Pricing Policy Management           | Cho phép Manager cấu hình bảng giá, khung giờ, block tính phí, cap từng khung giờ, grace period, phí phạt và rule làm tròn.                                          |
-| System State Management             | Quản lý trạng thái Slot, Card và Booking theo các trạng thái nghiệp vụ như AVAILABLE, RESERVED, OCCUPIED, ACTIVE, COMPLETED, PENDING, CONFIRMED, CANCELLED, EXPIRED. |
+| System State Management             | Quản lý trạng thái Building, Floor, Zone, Slot, Vehicle, Card, Parking Session, Booking, Incident, Monthly Card và Pricing Policy theo các trạng thái nghiệp vụ đã định nghĩa. |
 | Exception Handling                  | Xử lý mất mã, sai biển số, quá hạn, sai khu vực, chưa thanh toán.                                                                                                    |
 | Operation Monitoring                | Manager xem trạng thái bãi, doanh thu, lượt xe, tỷ lệ lấp đầy.                                                                                                       |
 

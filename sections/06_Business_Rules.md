@@ -93,11 +93,10 @@
 | BR-MONTH-010 | Vé tháng áp dụng cho biển số đăng ký cố định. | Hệ thống kiểm tra biển số khi check-in để xác định quyền lợi vé tháng. |
 | BR-MONTH-011 | Vé tháng được thanh toán trả trước theo chu kỳ. | Vé chỉ active sau khi thanh toán thành công. |
 | BR-MONTH-012 | Vé tháng có số ngày hiệu lực cấu hình. | Hệ thống xác định ngày bắt đầu và ngày hết hạn. |
-| BR-MONTH-013 | Vé tháng có thể cấu hình quyền gửi qua đêm. | Nếu không cho phép qua đêm, hệ thống xử lý phát sinh theo chính sách. |
-| BR-MONTH-014 | Mỗi vé tháng chỉ áp dụng cho một xe đã đăng ký. | Không cho dùng cùng một vé tháng cho nhiều xe. |
-| BR-MONTH-015 | Hệ thống quét vé tháng hết hạn lúc 00:00 mỗi ngày. | Nếu vé hết hạn và xe vẫn còn trong bãi, hệ thống downgrade. |
-| BR-MONTH-016 | Khi vé tháng bị downgrade, xe bắt đầu bị tính phí vãng lai từ thời điểm hết hạn. | Áp dụng bảng giá vãng lai cho đến khi xe rời bãi. |
-| BR-MONTH-017 | Sau khi gia hạn thành công, quyền lợi vé tháng được kích hoạt lại ngay lập tức. | Hệ thống cập nhật lại trạng thái active. |
+| BR-MONTH-013 | Mỗi vé tháng chỉ áp dụng cho một xe đã đăng ký. | Không cho dùng cùng một vé tháng cho nhiều xe. |
+| BR-MONTH-014 | Hệ thống quét vé tháng hết hạn lúc 00:00 mỗi ngày. | Nếu vé hết hạn và xe vẫn còn trong bãi, hệ thống downgrade. |
+| BR-MONTH-015 | Khi vé tháng bị downgrade, xe bắt đầu bị tính phí vãng lai từ thời điểm hết hạn. | Áp dụng bảng giá vãng lai cho đến khi xe rời bãi. |
+| BR-MONTH-016 | Sau khi gia hạn thành công, quyền lợi vé tháng được kích hoạt lại ngay lập tức. | Hệ thống cập nhật lại trạng thái active. |
 
 ---
 
@@ -196,44 +195,139 @@
 
 ## 6.13 System State Rules
 
+### Permission Status
+
+| Status | Ý nghĩa |
+|---|---|
+| ACTIVE | Quyền đang được sử dụng |
+| INACTIVE | Quyền tạm ngừng sử dụng |
+
+### Account Status
+
+| Status | Ý nghĩa |
+|---|---|
+| ACTIVE | Tài khoản đang hoạt động bình thường |
+| SUSPENDED | Tài khoản bị khóa, đình chỉ tạm thời|
+| ARCHIVED | Tài khoản không còn được sử dụng |
+
+
+### Building Status
+
+| Status | Ý nghĩa |
+|---|---|
+| INACTIVE     | Nhà xe chưa được đưa vào sử dụng.                                              |
+| ACTIVE       | Nhà xe hoạt động, cho phép xe ra vào.                                          |
+| MAINTENANCE  | Bãi xe được bảo trì; không tiếp nhận xe mới. Cho phép xe đang gửi ra khỏi bãi |
+| OUTOFSERVICE | Nhà xe không thể hoạt động                                                     |
+
+### Floor Status
+
+| Status | Ý nghĩa |
+|---|---|
+| INACTIVE     | Tầng chưa được đưa vào sử dụng                                              |
+| ACTIVE       | Tầng được sử dụng và cho phép xe sử dụng các vị trí đỗ                      |
+| MAINTENANCE  | Tầng được bảo trì; không tiếp nhận xe mới. Cho phép xe đang gửi ra khỏi bãi |
+| OUTOFSERVICE | Hết hạn khi xe vẫn còn trong bãi và bị chuyển sang tính phí vãng lai        |
+
+### Zone Status
+
+| Status | Ý nghĩa |
+|---|---|
+| AVAILABLE | Khu vực trống              |
+| OCCUPIED  | Khu vực không nhận thêm xe |
+| BLOCKED   | Khu vực không hoạt động    |
+
 ### Slot Status
 
 | Status | Ý nghĩa |
 |---|---|
-| AVAILABLE | Slot trống. |
-| RESERVED | Slot đã được booking. |
-| OCCUPIED | Slot đang có xe. |
-| BLOCKED | Slot bị khóa. |
+| AVAILABLE | Slot trống           |
+| RESERVED  | Slot đã được booking |
+| OCCUPIED  | Slot có xe           |
+| BLOCKED   | Slot bị khóa         |
+
+### Vehicle Type Status
+
+| Status | Ý nghĩa |
+|---|---|
+| INACTIVE | Loại xe đang được hỗ trợ |
+| ACTIVE | Loại xe tạm ngừng hỗ trợ |
+
+### Vehicle Status
+
+| Status | Ý nghĩa |
+|---|---|
+| INACTIVE | Chưa đăng ký xe trên hệ thống |
+| ACTIVE | Xe sử dụng trên hệ thống |
+| PENDING | Xe mới đăng ký, đang chờ xác minh |
+| SUSPENDED | Xe bị tạm khóa |
+| ARCHIVED | Người dùng đã xóa hoặc không còn sử dụng xe|
 
 ### Card Status
 
 | Status | Ý nghĩa |
 |---|---|
-| ACTIVE | Vé/session đang hoạt động. |
-| COMPLETED | Đã check-out. |
-| LOST | Mất vé/mã gửi xe. |
-| EXPIRED | Vé hết hạn. |
-| DOWNGRADED | Vé tháng bị downgrade. |
+| ACTIVE | Vé/session hoạt động |
+| COMPLETED | Đã check-out |
+| LOST | Mất vé/mã gửi xe |
+| EXPIRED | Vé hết hạn |
+| DOWNGRADED | Vé tháng bị downgrade |
+
+### Parking Session Status
+
+| Status | Ý nghĩa |
+|---|---|
+| ACTIVE | Session đang mở, xe đã check-in và vẫn còn trong bãi. Zone/Slot tương ứng đang bị giữ |
+| COMPLETED  | Session đã kết thúc, xe đã check-out và thanh toán hoàn tất. Zone/Slot được giải phóng |
+| LOST  | Người gửi xe bị mất vé/mã gửi xe. Hệ thống xử lý theo luồng lost card penalty trước khi cho xe ra |
+| EXPIRED   | Vé/session hết hạn hoặc không còn hợp lệ theo chính sách thời gian. Trong tài liệu chưa mô tả sâu cho parking session,nhưng có liên hệ với trường hợp vé hết hạn |
+| DOWNGRADED | Quyền lợi thẻ tháng bị downgrade, thường xảy ra khi thẻ tháng hết hạn trong lúc xe vẫn còn trong bãi; từ thời điểm hết hạn, hệ thống chuyển sang tính phí vãng lai |
 
 ### Booking Status
 
 | Status | Ý nghĩa |
 |---|---|
-| PENDING | Chờ thanh toán. |
-| CONFIRMED | Đã xác nhận. |
-| CANCELLED | Đã hủy. |
-| EXPIRED | Hết hạn check-in. |
-| COMPLETED | Đã sử dụng. |
+| PENDING | Chờ thanh toán |
+| CONFIRMED | Đã xác nhận |
+| CANCELLED | Đã hủy |
+| EXPIRED | Hết hạn check-in |
+| COMPLETED | Đã sử dụng |
+
+
+### Incident Status
+
+| Status | Ý nghĩa |
+|---|---|
+| OPEN | Sự cố mới được ghi nhận và đang chờ xử lý  |
+| PROCESSING | Sự cố đang được nhân viên xử lý |
+| RESOLVED | Sự cố đã được xử lý hoàn tất |
+| CANCELLED | Sự cố đã bị hủy hoặc không tiếp tục xử lý |
 
 ### Monthly Card Status
 
 | Status | Ý nghĩa |
 |---|---|
-| PENDING | Chờ thanh toán/kích hoạt. |
-| ACTIVE | Đang hiệu lực. |
-| EXPIRED | Đã hết hạn. |
-| DOWNGRADED | Hết hạn khi xe vẫn còn trong bãi và bị chuyển sang tính phí vãng lai. |
-| CANCELLED | Đã hủy. |
+| PENDING | Chờ thanh toán/kích hoạt |
+| ACTIVE | Đang hiệu lực |
+| EXPIRED | Đã hết hạn |
+| DOWNGRADED | Hết hạn khi xe vẫn còn trong bãi và bị chuyển sang tính phí vãng lai |
+| CANCELLED | Đã hủy |
+
+### Pricing Policy Status
+
+| Status | Ý nghĩa |
+|---|---|
+| INACTIVE | Chính sách giá chưa được áp dụng hoặc tạm ngừng |
+| ACTIVE | Chính sách giá đang có hiệu lực |
+| EXPIRED | Chính sách giá đã hết thời gian hiệu lực |
+
+### Payment Status
+
+| Status | Ý nghĩa |
+|---|---|
+| PENDING | Giao dịch đã được tạo và đang chờ thanh toán |
+| PAID | Giao dịch đã được thanh toán thành công |
+| FAILED | Giao dịch thanh toán không thành công |
 
 ## 6.14 Configurable Variables Rules
 
