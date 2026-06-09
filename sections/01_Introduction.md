@@ -26,16 +26,16 @@ nghiệm thu hệ thống.
 | Hardware Simulation               | Không có camera, thẻ vật lý, barrier, cảm biến slot. Tất cả thao tác được nhập hoặc xác nhận thủ công trên web.                                                                                                                                                                  |
 | Vehicle Support                   | Hệ thống cho phép cấu hình loại phương tiện ở mức dữ liệu nghiệp vụ. Trong phiên bản hiện tại, hệ thống chỉ kích hoạt và kiểm thử chính cho xe máy và ô tô.<br/>Các loại phương tiện khác như xe đạp, xe điện có thể được bổ sung sau thông qua cấu hình hoặc mở rộng nghiệp vụ. |
 | Motorcycle Parking                | Khi check-in, hệ thống hiện gợi ý Zone/Area còn chỗ, không quản lý tới từng slot cụ thể.                                                                                            |
-| Car Parking                       | Khi check-in, ô tô được hệ thống gợi ý Zone còn chỗ. Slot cụ thể chỉ áp dụng trong các trường hợp có booking slot hoặc thẻ tháng ô tô được cấp slot riêng.                                                                                                                       |
+| Car Parking                       | Khi check-in, ô tô Walk-in/Booking chỉ được gán Slot trong Zone `GENERAL`; ô tô thẻ tháng dùng Slot riêng trong Zone `MONTHLY`. |
 | Booking                           | Người dùng có thể đặt trước chỗ gửi xe, bắt buộc nhập biển số và đặt cọc phí booking.                                                                                                                                                                                            |
 | Motorcycle Booking                | Xe máy booking không chọn Zone/Slot cụ thể. Hệ thống đảm bảo có chỗ khi khách đến đúng thời gian hợp lệ.                                                                                                                                                                         |
-| Car Booking                       | Ô tô booking được chọn Slot cụ thể. Slot đó được giữ cho booking trong khung thời gian đặt trước.                                                                                                                                                                                |
-| Monthly Card                      | Thẻ tháng xe máy đảm bảo có chỗ, không phân theo Zone/Slot.<br/>Thẻ tháng ô tô được cấp Slot riêng, tương tự như mua quyền sử dụng một slot trong thời hạn thẻ.                                                                                                                  |
+| Car Booking                       | Ô tô booking chỉ chọn Building và Vehicle/biển số; hệ thống giữ general capacity ở Building và gán Slot trong Zone `GENERAL` khi check-in. |
+| Monthly Subscription              | Hồ sơ đăng ký/thẻ tháng gắn với Vehicle, Building và Card `MONTHLY`; xe máy giữ capacity động, ô tô giữ Slot riêng bằng `monthly_subscription.assigned_slot_id`. |
 | Payment                           | Hỗ trợ thanh toán tiền mặt và thanh toán online thật qua ngân hàng. Không hỗ trợ thanh toán bằng thẻ.                                                                                                                                                                            |
 | Fee Calculation                   | Giá gửi xe được tính theo mô hình Time Window, Base Price, Increment/Block Pricing và Window Cap. Nếu phiên gửi xe đi qua nhiều khung giờ, hệ thống tách phiên theo từng khung giờ và áp dụng bảng giá riêng cho từng khung.                                                     |
 | Pricing Policy Configuration      | Manager có thể cấu hình bảng giá theo loại xe, khung giờ, thời lượng cơ bản, giá cơ bản, block tính thêm, giá block phát sinh, cap theo khung giờ, phí phạt và các biến cấu hình liên quan.                                                                                      |
 | Rounding Policy                   | Hệ thống hỗ trợ rule làm tròn thời gian phát sinh theo grace period và làm tròn tiền mặt theo đơn vị làm tròn cấu hình. Thanh toán online giữ nguyên giá trị chính xác.                                                                                                          |
-| System State Management           | Hệ thống quản lý trạng thái Building, Floor, Zone, Slot, Vehicle, Card, Parking Session, Booking, Incident, Monthly Card và Pricing Policy theo các trạng thái nghiệp vụ đã định nghĩa.                                                                                          |
+| System State Management           | Hệ thống quản lý trạng thái Building, Floor, Zone, Slot, Vehicle, Card, Parking Session, Booking, Incident, Monthly Subscription và Pricing Policy theo các trạng thái nghiệp vụ đã định nghĩa.                                                                                          |
 | Driver Account & Vehicle          | Tài khoản Driver có thể được tạo trước khi có xe. Một tài khoản có thể thêm nhiều xe sau này.                                                                                                                                                                                    |
 | Scalability in Business Structure | Có thể mở rộng Building, Floor, Zone, Slot ở mức cấu hình nghiệp vụ.                                                                                                                                                                                                             |
 | Parking Session Tracking          | Ghi nhận xe vào, trạng thái đang gửi, khu vực/slot được phân bổ, phí tạm tính.                                                                                                                                                                                                   |
@@ -68,7 +68,8 @@ nghiệm thu hệ thống.
 | Slot                    | Vị trí đỗ cụ thể, dùng chính cho ô tô.                                                                                                                |
 | Parking Session         | Một lượt gửi xe từ lúc check-in đến check-out.                                                                                                        |
 | Booking                 | Đặt chỗ trước cho một khoảng thời gian.                                                                                                               |
-| Monthly Card            | Gói/thẻ tháng cho phép gửi xe theo chính sách định kỳ.                                                                                                |
+| Monthly Subscription    | Hồ sơ đăng ký và quyền lợi gửi xe định kỳ gắn với một Vehicle; tên nghiệp vụ tiếng Việt có thể là thẻ tháng/vé tháng. |
+| Card                    | Card vận hành do bãi xe quản lý, dùng để nhận diện một Parking Session bằng `card_code` hiện tại hoặc `nfc_uid` trong tương lai. |
 | Manual Input            | Người dùng nhập dữ liệu bằng tay trên web, thay cho camera/thẻ/hardware thật.                                                                         |
 | Pricing Window          | Khung thời gian áp dụng một bảng giá cụ thể, ví dụ khung ngày hoặc khung đêm.                                                                         |
 | Base Duration           | Thời lượng cơ bản được tính theo giá cơ bản.                                                                                                          |
@@ -83,23 +84,16 @@ nghiệm thu hệ thống.
 | Downgrade               | Việc chuyển vé tháng hết hạn sang trạng thái tính phí như khách vãng lai nếu xe vẫn còn trong bãi.                                                    |
 | Cash Rounding           | Quy tắc làm tròn số tiền khi thanh toán tiền mặt.                                                                                                     |
 | Online Payment Rounding | Thanh toán online không làm tròn, giữ nguyên giá trị chính xác.                                                                                       |
-| Virtual Card Code       | Mã thẻ/mã gửi xe mô phỏng, không phải thẻ vật lý.                                                                                                     |
+| Card Code               | Mã nghiệp vụ của Card để Staff nhập thủ công khi check-in/check-out, ví dụ `CARD-000001`. |
+| NFC UID                 | UID kỹ thuật của chip NFC, chỉ dùng khi hệ thống tích hợp Card NFC trong tương lai. |
 | Available               | Còn trống.                                                                                                                                            |
 | Occupied                | Đang có xe sử dụng.                                                                                                                                   |
-| Reserved                | Đã được booking hoặc giữ chỗ.                                                                                                                         |
+| Assigned                | Đã được gán cho session hoặc subscription theo quan hệ nghiệp vụ tương ứng. |
 | Maintenance/Locked      | Tạm khóa, không được phân bổ.                                                                                                                         |
 
 ---
 
-## 1.4 References
-
-- Parking Building Management System — SRS Analysis Draft.
-- PBMS - SRS Updated Sections.
-- Software Requirements Specification Template.
-
----
-
-## 1.5 Document Overview
+## 1.4 Document Overview
 
 - Chương 1 mô tả mục đích, phạm vi, thuật ngữ và tài liệu tham chiếu.
 - Chương 2 mô tả tổng quan hệ thống.

@@ -15,9 +15,10 @@
 
 # Public Information
 
-- Pricing & Policies
-- Vehicle Types
-- Support & Feedback
+- View pricing and policies
+- View supported vehicle types
+- View building parking information
+- Submit support request or feedback
 
 ---
 
@@ -26,35 +27,66 @@
 ## User Dashboard
 
 - View parking activity overview
+- View active booking status
+- View active monthly subscription status
+- View payment status and pending payments
+
+## Account & Vehicle Management
+
+- Manage personal profile
+- Add vehicle
+- Update vehicle information
+- View registered vehicles
+- Deactivate vehicle
 
 ## Parking Booking
 
-- View parking availability
-- View parking map
-- View available zones/slots
-- Select vehicle type
+- View parking availability by building
+- Select vehicle or enter license plate
+- Select planned check-in and check-out time
 - Create advance booking
-- Confirm booking
+- Pay booking deposit
+- View booking payment deadline
+- Confirm booking after successful deposit payment
+- Cancel booking before allowed cancellation deadline
+- View booking history
+
+## Monthly Subscription
+
+- Register monthly subscription for one vehicle
+- Select applicable building
+- Pay monthly subscription fee
+- View assigned monthly card
+- View assigned monthly slot for car subscription
+- Renew monthly subscription
+- View monthly subscription history
 
 ## Parking Session
 
 - View active parking session
-- View ticket / QR code
+- View ticket or simulated card code
 - Track temporary fee
+- View assigned zone for motorcycle session
+- View assigned slot for car session
 - View parking history
 
 ## Payment
 
 - View payment summary
-- Online payment
+- Pay online through banking
+- View cash payment status
+- View booking deposit payments
+- View monthly subscription payments
 - View payment history
+- View refunded payments
 
 ## Feedback & Incident Report
 
-- Lost ticket report
-- Wrong fee report
-- Occupied slot report
-- General feedback
+- Report lost ticket or card code
+- Report wrong fee
+- Report occupied slot
+- Report wrong license plate
+- Submit general feedback
 
 ---
 
@@ -63,41 +95,72 @@
 ## Staff Dashboard
 
 - View operational overview
+- View active parking sessions
+- View pending check-out payments
+- View active incidents
 
 ## Vehicle Check-in
 
-- Validate vehicle
-- Allocate parking area
-- Generate ticket
+- Enter license plate manually
+- Validate vehicle and account information
+- Validate booking status and check-in grace time
+- Validate monthly subscription status
+- Validate blacklist status
+- Assign normal card for walk-in or booking session
+- Validate monthly card for monthly subscription session
+- Allocate motorcycle to available zone
+- Allocate walk-in or booking car to `GENERAL` zone slot
+- Allocate monthly car to assigned `MONTHLY` zone slot
+- Generate ticket or simulated card code
 - Create parking session
 
 ## Vehicle Check-out
 
-- Search parking session
-- Verify parking information
-- Calculate fee
-- Receive payment
+- Search active parking session
+- Verify license plate and card code
+- Calculate parking fee
+- Apply pricing window and rounding rules
+- Receive cash payment
+- Verify online payment
 - Complete check-out
+- Release occupied zone capacity or slot
 
 ## Slot & Zone Monitoring
 
-- View parking map
-- Update slot/zone status
-- Relocate vehicle
+- View parking map by building and floor
+- View zone capacity
+- View slot status
+- Update zone operational status
+- Update slot operational status
+- Mark slot as maintenance
+- Block slot from operation
+- Relocate vehicle when allowed
+
+## Card Operations
+
+- Search card by card code
+- Assign normal card to parking session
+- Validate monthly card
+- Mark card as lost
+- Mark card as active or inactive
 
 ## Incident Handling
 
-- Handle lost ticket
+- Handle lost ticket or simulated card
 - Handle wrong license plate
 - Handle overtime parking
 - Handle wrong area parking
 - Handle unpaid vehicle
+- Create incident record
+- Update incident status
+- Create blacklist record for vehicle or card when required
 
 ## Shift Report
 
 - View daily activity
-- View revenue summary
+- View payment summary
 - View incident summary
+- View check-in and check-out count
 
 ---
 
@@ -106,28 +169,72 @@
 ## Manager Dashboard
 
 - View parking operation overview
+- View capacity utilization
+- View revenue overview
+- View incident overview
 
 ## Facility Management
 
 - Manage building
 - Manage floor
 - Manage zone
-- Configure vehicle allocation
+- Configure zone access type
+- Configure vehicle allocation rules
+- Configure motorcycle capacity by zone
 
 ## Slot Management
 
 - Manage parking slots
 - Control slot status
-- Manage reserved slots
+- Manage car slots in `GENERAL` zones
+- Manage monthly car slots in `MONTHLY` zones
 - Manage maintenance slots
-- Manage locked slots
+- Manage blocked slots
+
+## Vehicle Type Management
+
+- Manage vehicle types
+- Activate vehicle type
+- Deactivate vehicle type
+
+## Monthly Subscription Management
+
+- View monthly subscription requests
+- Approve monthly subscription
+- Assign monthly card
+- Assign monthly car slot
+- Activate monthly subscription
+- Renew monthly subscription
+- Suspend or cancel monthly subscription
+- Track monthly subscription capacity usage
 
 ## Pricing Management
 
-- Configure pricing rules
-- Configure vehicle pricing
-- Configure peak-hour pricing
+- Configure pricing policies by vehicle type
+- Configure pricing windows
+- Configure base duration and base price
+- Configure increment block and increment price
+- Configure window cap
+- Configure grace period
 - Configure penalty policies
+- Configure cash rounding rule
+
+## Payment & Revenue Management
+
+- View payment transactions
+- Trace payment source by parking session, booking, or monthly subscription
+- View cash and online banking revenue
+- View refunded payments
+- View revenue statistics
+- Trace aggregated revenue payments
+
+## Blacklist Management
+
+- View blacklist records
+- Add vehicle to blacklist
+- Add card to blacklist
+- Link blacklist record to incident
+- Remove blacklist record when allowed
 
 ## Analytics & Reports
 
@@ -136,6 +243,7 @@
 - View revenue analytics
 - View peak-hour analysis
 - View incident statistics
+- View monthly subscription statistics
 
 ---
 
@@ -151,6 +259,7 @@
 - Update account
 - Deactivate account
 - Reset password
+- Manage driver accounts without registered vehicles
 
 ## Role & Permission
 
@@ -162,6 +271,9 @@
 
 - Configure notifications
 - Configure payment settings
+- Configure booking timeout
+- Configure booking grace time
+- Configure cancellation and no-show policies
 - Configure security settings
 
 ## System Monitoring

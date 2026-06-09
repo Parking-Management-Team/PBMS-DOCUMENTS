@@ -36,13 +36,13 @@ sức chứa, xe ra phải được thanh toán và cập nhật trạng thái.
 | SC-003      | Booking bắt buộc nhập biển số.                                                                         |
 | SC-004      | Booking chỉ confirmed sau khi thanh toán cọc thành công.                                               |
 | SC-005      | Booking phải được đặt trước tối thiểu 1 tiếng và tối đa 8 tiếng tính từ lúc thanh toán cọc thành công. |
-| SC-006      | Xe máy booking phải chọn Building trước; Zone có thể do người dùng chọn hoặc do hệ thống tự chọn.       |
-| SC-007      | Ô tô booking phải chọn Building trước; Slot/Zone có thể do người dùng chọn hoặc do hệ thống tự chọn.    |
+| SC-006      | Xe máy booking phải chọn Building trước; người dùng không chọn Zone/Slot, hệ thống chọn Zone khi check-in. |
+| SC-007      | Ô tô booking phải chọn Building trước; người dùng không chọn Zone/Slot, hệ thống chọn Slot trong Zone `GENERAL` khi check-in. |
 | SC-008      | Booking yêu cầu thanh toán Deposit Fee bằng giá của block đầu tiên theo bảng giá hiện hành.            |
 | SC-009      | Booking được hoàn cọc nếu khách hủy trước giờ booking ít nhất 1 tiếng.                                 |
 | SC-010      | Booking bị hủy và mất cọc nếu khách đến trễ quá 45 phút.                                               |
-| SC-011      | Thẻ tháng xe máy đảm bảo có chỗ nhưng không phân theo Zone/Slot cụ thể.                                |
-| SC-012      | Thẻ tháng ô tô được cấp Slot riêng trong thời hạn thẻ.                                                 |
+| SC-011      | Thẻ tháng xe máy đảm bảo có chỗ bằng capacity động: mỗi subscription `ACTIVE` giảm capacity Walk-in/Booking một đơn vị. |
+| SC-012      | Thẻ tháng ô tô được cấp Slot riêng trong Zone `MONTHLY`; Slot được giữ bằng `monthly_subscription.assigned_slot_id`. |
 | SC-013      | Thẻ tháng không giới hạn số lượt vào/ra mỗi ngày.                                                      |
 | SC-014      | Hệ thống không cho cấp thêm thẻ tháng nếu vượt khả năng đảm bảo chỗ.                                   |
 | SC-015      | Hệ thống hỗ trợ thanh toán tiền mặt và online qua ngân hàng.                                           |
@@ -51,7 +51,7 @@ sức chứa, xe ra phải được thanh toán và cập nhật trạng thái.
 | SC-018      | Hệ thống không cấp hết chỗ cho walk-in/booking nếu phần còn lại cần giữ cho khách thẻ tháng.           |
 | SC-019      | Staff có thể tạo lượt gửi xe bằng nhập thủ công biển số, loại xe, mã gửi xe.                           |
 | SC-020      | Xe máy được hệ thống gợi ý Zone/Area còn trống.                                                        |
-| SC-021      | Ô tô vãng lai được hệ thống gợi ý Zone còn trống; ô tô booking/thẻ tháng dùng Slot đã chọn/cấp hoặc Slot do hệ thống tự chọn. |
+| SC-021      | Ô tô Walk-in/Booking chỉ được hệ thống gán Slot trong Zone `GENERAL`; ô tô thẻ tháng dùng Slot đã cấp trong Zone `MONTHLY`. |
 | SC-022      | Khi check-out, hệ thống tính được phí và ghi nhận thanh toán tiền mặt hoặc online.                     |
 | SC-023      | Sau khi xe ra, Zone/Slot được cập nhật lại trạng thái còn trống.                                       |
 | SC-024      | Manager có thể xem tình trạng chỗ đỗ, lượt xe và doanh thu.                                            |
@@ -108,7 +108,8 @@ sức chứa, xe ra phải được thanh toán và cập nhật trạng thái.
 5. Hệ thống phân bổ:
     - Xe máy → Zone/Area còn trống.
     - Ô tô vãng lai → Zone còn trống.
-    - Ô tô booking/thẻ tháng → Slot đã chọn/cấp riêng hoặc Slot do hệ thống tự chọn nếu khách không chọn trước.
+    - Ô tô booking → Slot trong Zone `GENERAL` do hệ thống chọn khi check-in.
+    - Ô tô thẻ tháng → Slot riêng trong Zone `MONTHLY` đã được cấp qua `monthly_subscription.assigned_slot_id`.
 6. Hệ thống tạo booking, monthly registration hoặc parking session.
 7. Khi xe ra, Staff tìm session.
 8. Hệ thống tính phí.
@@ -132,12 +133,12 @@ sức chứa, xe ra phải được thanh toán và cập nhật trạng thái.
 8. Hệ thống xác định bảng giá hiện hành theo loại xe và thời điểm booking.
 9. Hệ thống tính Deposit Fee bằng giá của block đầu tiên theo bảng giá hiện hành.
 10. Hệ thống kiểm tra chỗ khả dụng trong Building đã chọn:
-    - Xe máy: Driver có thể chọn Zone nếu hệ thống cho phép. Nếu không chọn Zone, hệ thống tự chọn Zone phù hợp còn capacity.
-    - Ô tô: Driver có thể chọn Slot cụ thể. Nếu không chọn Slot/Zone, hệ thống tự chọn Zone/Slot phù hợp còn khả dụng.
+    - Xe máy: Driver không chọn Zone/Slot; hệ thống kiểm tra general capacity của Building sau khi trừ Monthly Subscription xe máy active.
+    - Ô tô: Driver không chọn Zone/Slot; hệ thống kiểm tra Slot khả dụng trong các Zone `GENERAL` của Building.
 11. Hệ thống tạo yêu cầu thanh toán cọc.
 12. Driver thanh toán cọc qua ngân hàng.
 13. Nếu thanh toán cọc thành công, hệ thống xác nhận booking và chuyển trạng thái booking sang CONFIRMED.
-14. Nếu booking giữ Zone/Slot cụ thể, Zone capacity hoặc Slot tương ứng được giữ cho booking.
+14. Booking chỉ giữ capacity ở mức Building; vị trí thực tế được hệ thống gán khi check-in và lưu ở Parking Session.
 15. Khi Driver đến đúng thời gian hợp lệ, booking được chuyển thành parking session.
 
 #### Exception Flow
@@ -159,24 +160,24 @@ sức chứa, xe ra phải được thanh toán và cập nhật trạng thái.
 | Quá thời gian thanh toán booking | Hệ thống tự động hủy booking và trả slot/capacity về trạng thái available. |
 | Khách không check-in trong thời gian ân hạn | Booking bị hủy tự động, deposit fee không được hoàn trả. |
 
-### 4.5.2 Monthly Card Workflow
+### 4.5.2 Monthly Subscription Workflow
 
 #### Main Flow
 
-1. Driver mở chức năng đăng ký thẻ tháng.
+1. Driver mở chức năng đăng ký Monthly Subscription/thẻ tháng.
 2. Driver chọn hoặc thêm xe vào tài khoản.
 3. Hệ thống kiểm tra biển số xe và loại xe.
 4. Hệ thống kiểm tra thẻ tháng hiện tại của xe.
 5. Hệ thống kiểm tra khả năng đảm bảo chỗ theo loại xe:
-    - Xe máy: kiểm tra capacity dành cho nhóm thẻ tháng xe máy.
-    - Ô tô: kiểm tra Slot còn có thể cấp riêng cho thẻ tháng ô tô.
-6. Nếu còn khả năng đảm bảo chỗ, hệ thống tạo yêu cầu thanh toán.
+    - Xe máy: kiểm tra capacity động; mỗi Monthly Subscription xe máy `ACTIVE` giữ một đơn vị và làm giảm capacity Walk-in/Booking.
+    - Ô tô: kiểm tra Slot còn có thể cấp riêng trong Zone `MONTHLY` của Building đã chọn.
+6. Nếu còn khả năng đảm bảo chỗ, hệ thống tạo hồ sơ `monthly_subscription` ở trạng thái `PENDING` và tạo yêu cầu thanh toán.
 7. Driver thanh toán phí thẻ tháng.
-8. Khi thanh toán thành công, hệ thống kích hoạt thẻ tháng.
-9. Khi xe máy thẻ tháng vào bãi, hệ thống gợi ý Zone còn chỗ.
-10. Khi ô tô thẻ tháng vào bãi, hệ thống dùng Slot riêng đã được cấp cho xe đó.
+8. Khi thanh toán thành công, hệ thống kích hoạt Monthly Subscription, thiết lập thời gian hiệu lực, gán Card `MONTHLY`, và giữ capacity/slot tương ứng.
+9. Khi xe máy có Monthly Subscription vào bãi, Driver dùng Card `MONTHLY`; hệ thống kiểm tra subscription hợp lệ, dùng capacity tháng đã giữ và gợi ý Zone còn chỗ.
+10. Khi ô tô có Monthly Subscription vào bãi, Driver dùng Card `MONTHLY`; hệ thống dùng Slot riêng trong Zone `MONTHLY` đã được cấp cho xe đó.
 11. Driver có thể ra/vào nhiều lượt trong ngày nếu thẻ còn hiệu lực và không có session đang mở cùng lúc.
-12. Hệ thống lưu thông tin vé tháng theo biển số đăng ký cố định.
+12. Hệ thống lưu quyền lợi tháng theo Vehicle, Building, Card `MONTHLY` và Slot nếu là ô tô; Card type không tự cấp quyền lợi nếu không có Monthly Subscription hợp lệ.
 13. Hệ thống ghi nhận chu kỳ hiệu lực của vé tháng theo valid duration.
 14. Nếu vé tháng được gia hạn thành công trước hoặc sau khi hết hạn, quyền lợi vé tháng được kích hoạt lại ngay sau khi thanh toán thành công.
 
@@ -205,7 +206,7 @@ sức chứa, xe ra phải được thanh toán và cập nhật trạng thái.
 #### Main Flow
 
 1. Staff mở màn hình Check-in.
-2. Staff nhập biển số hoặc mã booking/mã thẻ tháng.
+2. Staff nhập biển số hoặc mã booking, sau đó nhập `card_code` của Card vận hành được cấp cho lượt gửi hiện tại.
 3. Hệ thống xác định loại xe và trạng thái liên quan:
     - Khách vãng lai.
     - Khách có booking.
@@ -213,18 +214,18 @@ sức chứa, xe ra phải được thanh toán và cập nhật trạng thái.
 4. Hệ thống kiểm tra xe có session đang mở hay không.
 5. Hệ thống kiểm tra điều kiện chỗ đỗ:
     - Xe máy vãng lai: tìm Zone/Area còn sức chứa.
-    - Ô tô vãng lai: tìm Zone còn sức chứa cho ô tô.
+    - Ô tô vãng lai: tìm Slot còn trống trong Zone `GENERAL`.
     - Xe máy thẻ tháng: đảm bảo có chỗ, không phân theo Zone/Slot cố định.
-    - Ô tô thẻ tháng: kiểm tra Slot riêng đã được cấp cho xe.
+    - Ô tô thẻ tháng: kiểm tra Slot riêng trong Zone `MONTHLY` đã được cấp cho xe.
     - Xe máy booking: kiểm tra booking còn hiệu lực và còn trong thời gian cho phép.
-    - Ô tô booking: kiểm tra Slot đã booking còn hiệu lực.
+    - Ô tô booking: kiểm tra booking còn hiệu lực và general capacity đã giữ ở Building.
 6. Hệ thống gợi ý chỗ đỗ:
     - Xe máy: gợi ý Zone/Area.
-    - Ô tô vãng lai: gợi ý Zone.
-    - Ô tô booking/thẻ tháng: hiển thị Slot tương ứng.
+    - Ô tô Walk-in/Booking: gán Slot trong Zone `GENERAL`.
+    - Ô tô thẻ tháng: hiển thị Slot riêng trong Zone `MONTHLY`.
 7. Staff xác nhận check-in.
-8. Hệ thống tạo parking session.
-9. Hệ thống cập nhật trạng thái chỗ đỗ.
+8. Hệ thống tạo parking session có `card_id`; nếu áp dụng quyền lợi tháng thì lưu thêm `monthly_subscription_id`, nếu từ booking thì lưu `booking_id`.
+9. Với Card `NORMAL`, hệ thống chuyển Card sang `ASSIGNED`; với Card `MONTHLY`, Card giữ trạng thái `ASSIGNED`. Slot status chỉ phản ánh trạng thái vật lý của Slot.
 
 #### Exception Flow
 
@@ -243,8 +244,8 @@ sức chứa, xe ra phải được thanh toán và cập nhật trạng thái.
 #### Main Flow
 
 1. Staff mở màn hình Check-out.
-2. Staff nhập biển số hoặc mã gửi xe.
-3. Hệ thống tìm parking session đang mở.
+2. Staff nhập `card_code` hoặc thông tin thay thế khi xử lý ngoại lệ.
+3. Hệ thống tìm Card và parking session đang mở theo `card_id`.
 4. Hệ thống tính phí dựa trên:
    - Loại xe.
    - Thời gian thực tế sử dụng.
