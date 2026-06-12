@@ -45,6 +45,7 @@
   - [FR-010: Fee Calculation](#fr-010-fee-calculation)
   - [FR-011: Exception Handling](#fr-011-exception-handling)
   - [FR-012: Operation Monitoring](#fr-012-operation-monitoring)
+  - [FR-013: Pricing Policy Management](#fr-013-pricing-policy-management)
 
 - [6. Business Rules](#6-business-rules)
   - [6.1 Parking Structure Rules](#61-parking-structure-rules)
@@ -91,5 +92,8 @@
     - [8.3.2 Relationship Summary From Conceptual Model](#832-relationship-summary-from-conceptual-model)
     - [8.3.3 Physical Tables](#833-physical-tables)
     - [8.3.4 Mermaid ERD With Physical Tables](#834-mermaid-erd-with-physical-tables)
+    - [8.3.5 Cross-Domain Constraints](#835-cross-domain-constraints)
+    - [8.3.6 Notes / Deviations From Previous Version](#836-notes--deviations-from-previous-version)
+    - [8.3.7 Verification Checklist](#837-verification-checklist)
 
 ---
