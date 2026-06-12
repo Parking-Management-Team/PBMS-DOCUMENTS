@@ -1,3 +1,85 @@
+# ĐỌC CÁI NÀY 12/6/2026 CHANGE LOGS:
+Các thay đổi quan trọng nhất của bộ SRS PBMS hiện tại:
+
+  1. Booking và Allocation
+
+  - Booking không giữ Zone hoặc Slot.
+  - Xe máy/ô tô Booking chỉ giữ general capacity ở Building.
+  - Ô tô Walk-in/Booking khi check-in chỉ được gợi ý Zone GENERAL; Slot thực tế chỉ ghi nhận sau khi xe đã đậu.
+  - No-show chuyển Booking sang EXPIRED, không cập nhật slot_status.
+  - Check-in grace dùng cấu hình động checkin_grace_minutes.
+
+  2. Pricing Policy
+
+  - Pricing Policy dùng chung toàn hệ thống theo Vehicle Type, không theo Building.
+  - Parking Session không bắt buộc lưu pricing_policy_id.
+  - Policy áp dụng cho session được xác định bằng:
+    Vehicle -> Vehicle Type -> check_in_time -> Pricing Policy hiệu lực.
+
+  - Check-in phải kiểm tra có đúng một Pricing Policy hợp lệ; nếu không có thì từ chối check-in và không tạo session.
+  - Check-out luôn dùng Policy áp dụng tại check_in_time, không dùng Policy tại check_out_time.
+  - Policy đã ACTIVE hoặc đã được dùng thì bị khóa cấu hình giá/Pricing Window.
+  - Policy cùng Vehicle Type không được overlap timeline.
+  - Payment lưu pricing_policy_id để audit.
+
+  3. Pricing Window và Fee Calculation
+
+  - Pricing Window trong cùng Policy phải phủ đủ 24 giờ và không overlap.
+  - Cho phép Window đi qua nửa đêm.
+  - Session không reset qua ngày.
+  - Fee Calculation chia thời gian theo từng Pricing Window occurrence.
+  - Một đoạn lớn hơn 0 trong Pricing Window phải chịu ít nhất Base Price.
+  - Window Cap áp dụng cho từng đoạn/window occurrence, không áp dụng toàn session.
+
+  4. Booking Deposit
+
+  - Booking Deposit tính theo Booking Policy tại thời điểm Booking được tạo/thanh toán.
+  - Deposit không bị tính lại khi xe check-in, kể cả Policy lúc check-in khác Booking Policy.
+  - Checkout trừ đúng Deposit đã thanh toán.
+  - Booking Cancellation Refund Policy vẫn giữ nguyên: hủy đúng hạn vẫn được hoàn Deposit.
+
+  5. Check-out và Payment
+
+  - check_out_time được ghi nhận ngay khi bắt đầu check-out, trước khi tính phí.
+  - Payment PENDING trong cùng lần check-out không làm phí tiếp tục tăng.
+  - Checkout Payment không có automatic timeout.
+  - Booking Payment dùng booking_payment_timeout_minutes.
+  - Monthly Subscription Payment dùng monthly_subscription_payment_timeout_minutes.
+  - Payment phải có exactly one source: session, booking hoặc monthly subscription.
+  - Payment FAILED không được reset về PENDING; retry tạo Payment mới.
+  - Một Payment có thể FAILED nhưng checkout vẫn tiếp tục.
+  - Chỉ khi toàn bộ checkout Failed thì rollback check_out_time, session tiếp tục đang gửi.
+  - Đổi phương thức thanh toán trong cùng checkout giữ nguyên check_out_time.
+
+  6. Monthly Subscription
+
+  - Mỗi Monthly Subscription áp dụng cho một xe.
+  - Ô tô tháng dùng Slot riêng trong Zone MONTHLY; xe máy tháng giữ capacity động.
+  - Monthly Subscription checkout hợp lệ có thể có amount_due = 0.
+  - Quyền lợi tháng trong checkout được đánh giá tại check_out_time, không đánh giá lại theo thời điểm Payment hoàn tất.
+  - Nếu subscription hết hạn trong lúc Payment Pending nhưng còn hiệu lực tại check_out_time, không tính thêm phí.
+  - Nếu đã hết hạn trước hoặc đúng check_out_time, tính Walk-in từ expired_at đến check_out_time.
+  - Nếu checkout Failed rollback, lần checkout sau ghi nhận mốc mới và đánh giá lại quyền lợi theo mốc mới.
+
+  7. Payment và Scope loại bỏ
+
+  - Đã loại Discount, Promotion, Coupon, VAT/Tax calculation khỏi scope.
+  - Cash rounding chỉ áp dụng trên số tiền cuối cùng sau:
+    phí gửi xe + phụ phí/phí phạt - Booking Deposit hợp lệ.
+
+  - Không tạo thêm entity/field cho Discount/VAT/credit/wallet/account balance.
+
+  8. Data Model
+
+  - pricing_policy liên kết Vehicle Type, không có building_id.
+  - pricing_window thuộc Pricing Policy, phải phủ 24h và không overlap.
+  - parking_session không bắt buộc có pricing_policy_id.
+  - payment.pricing_policy_id dùng để audit policy thực sự được dùng.
+  - Payment amount >= 0.
+  - Không thêm entity mới cho phần Deposit dư.
+  
+---
+
 # Parking Building Management System (PBMS)
 
 Software Requirements Specification (SRS) repository for the Parking Building Management System project.
