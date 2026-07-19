@@ -36,28 +36,35 @@ skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
 skinparam ArrowFontSize 42
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
+skinparam ConditionStyle inside
+skinparam ActivityDiamondFontSize 48
+skinparam ActivityDiamondFontStyle bold
+skinparam ActivityDiamondBackgroundColor #FFF2CC
+skinparam ActivityDiamondBorderColor #8A6D1D
 skinparam activity {
   BackgroundColor #F7F7F7
   BorderColor #454545
   DiamondBackgroundColor #FFF2CC
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
-  EndColor #2E7D32
+  EndColor #C62828
+  Padding 16
+  Margin 12
 }
 
 |Guest|
 start
 :Choose password or Google sign-in;
 
-if (Authentication path?) then (Password registration)
+if (\n  Authentication path?  \n) then (Password registration)
   :Enter email;
   |Web UI|
   :Request registration OTP;
   |PBMS API|
-  if (Resend cooldown elapsed?) then (No)
+  if (\n  Resend cooldown elapsed?  \n) then (No)
     :Reject resend request;
     |Guest|
     :Wait until 60-second cooldown ends; <<#FFCDD2>>
@@ -70,12 +77,12 @@ if (Authentication path?) then (Password registration)
     |Guest|
     :Submit OTP;
     |PBMS API|
-    if (Verification locked?) then (Yes)
+    if (\n  Verification locked?  \n) then (Yes)
       :Reject during 15-minute lockout; <<#FFCDD2>>
       stop
-    elseif (OTP valid and not expired?) then (No)
+    elseif (\n  OTP valid and not expired?  \n) then (No)
       :Increment failed attempts;
-      if (Five failed attempts?) then (Yes)
+      if (\n  Five failed attempts?  \n) then (Yes)
         :Lock verification for 15 minutes;
       endif
       |Guest|
@@ -86,7 +93,7 @@ if (Authentication path?) then (Password registration)
       |Guest|
       :Submit profile, password,\nand registration token;
       |PBMS API|
-      if (Token and profile valid?) then (No)
+      if (\n  Token and profile valid?  \n) then (No)
         :Reject account creation; <<#FFCDD2>>
         stop
       else (Yes)
@@ -98,7 +105,7 @@ else (Google)
   |Google Identity|
   :Validate Google identity;
   |PBMS API|
-  if (Existing linked account?) then (No)
+  if (\n  Existing linked account?  \n) then (No)
     :Require verified new-account\nregistration path;
     |Guest|
     :Complete email verification and profile;
@@ -110,7 +117,7 @@ endif
 |Guest|
 :Submit password or Google credential;
 |PBMS API|
-if (Credentials belong to active account?) then (No)
+if (\n  Credentials belong to active account?  \n) then (No)
   :Reject login; <<#FFCDD2>>
   stop
 else (Yes)
@@ -118,7 +125,7 @@ else (Yes)
   |Web UI|
   :Store authenticated session;
   :Attach Bearer token to API requests;
-  if (An API response is HTTP 401?) then (Yes)
+  if (\n  An API response is HTTP 401?  \n) then (Yes)
     :Clear local authenticated session;
   endif
   :Authenticated session available; <<#C8E6C9>>
@@ -143,31 +150,38 @@ skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
 skinparam ArrowFontSize 42
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
+skinparam ConditionStyle inside
+skinparam ActivityDiamondFontSize 48
+skinparam ActivityDiamondFontStyle bold
+skinparam ActivityDiamondBackgroundColor #FFF2CC
+skinparam ActivityDiamondBorderColor #8A6D1D
 skinparam activity {
   BackgroundColor #F7F7F7
   BorderColor #454545
   DiamondBackgroundColor #FFF2CC
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
-  EndColor #2E7D32
+  EndColor #C62828
+  Padding 16
+  Margin 12
 }
 
 |Manager or Admin|
 start
 :Open management workspace;
-if (Management area?) then (Structure)
+if (\n  Management area?  \n) then (Structure)
   :Create or update Building, Floor,\nZone, VehicleType, or ParkingSlot;
   |Web UI|
   :Validate required fields and ranges;
   |PBMS API|
-  if (Authorized and hierarchy valid?) then (No)
+  if (\n  Authorized and hierarchy valid?  \n) then (No)
     :Reject operation; <<#FFCDD2>>
     stop
   else (Yes)
-    if (Zone BookingLimitRate valid 1..100?) then (No)
+    if (\n  Zone BookingLimitRate valid 1..100?  \n) then (No)
       :Reject invalid rate; <<#FFCDD2>>
       stop
     endif
@@ -176,7 +190,7 @@ if (Management area?) then (Structure)
     |PBMS API|
     :Expose active structure to\nbooking, allocation, and monitoring;
   endif
-elseif (Pricing policy)
+elseif (\n  Pricing policy  \n)
   |Manager|
   :Define vehicle type, effective range,\nrules, caps, and integer priority;
   |PBMS API|
@@ -191,7 +205,7 @@ else (Dynamic configuration)
   |Manager or Admin|
   :Update supported configuration key;
   |PBMS API|
-  if (Type and range valid?) then (No)
+  if (\n  Type and range valid?  \n) then (No)
     :Reject configuration value; <<#FFCDD2>>
     stop
   else (Yes)
@@ -224,16 +238,23 @@ skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
 skinparam ArrowFontSize 42
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
+skinparam ConditionStyle inside
+skinparam ActivityDiamondFontSize 48
+skinparam ActivityDiamondFontStyle bold
+skinparam ActivityDiamondBackgroundColor #FFF2CC
+skinparam ActivityDiamondBorderColor #8A6D1D
 skinparam activity {
   BackgroundColor #F7F7F7
   BorderColor #454545
   DiamondBackgroundColor #FFF2CC
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
-  EndColor #2E7D32
+  EndColor #C62828
+  Padding 16
+  Margin 12
 }
 
 |Driver|
@@ -251,14 +272,14 @@ if (Active structure, compatible type,\nnot blacklisted, no conflict?) then (No)
   :Reject ineligible booking; <<#FFCDD2>>
   stop
 endif
-if (Slot selected?) then (Yes)
+if (\n  Slot selected?  \n) then (Yes)
   if (Vehicle is car and slot is\navailable with configured buffer?) then (No)
     :Reject slot selection; <<#FFCDD2>>
     stop
   endif
 endif
 :Calculate effective capacity and\nzone booking load;
-if (Allowed capacity exceeded?) then (Yes)
+if (\n  Allowed capacity exceeded?  \n) then (Yes)
   :Reject insufficient capacity; <<#FFCDD2>>
   stop
 endif
@@ -275,7 +296,7 @@ endif
 |VNPay|
 :Send signed IPN or browser return;
 |PBMS API|
-if (Signature, result, and window valid?) then (Yes)
+if (\n  Signature, result, and window valid?  \n) then (Yes)
   :Apply callback idempotently;
   :Set Payment = PAID;
   :Set Booking = Confirmed;
@@ -284,20 +305,20 @@ else (No)
 endif
 
 |Driver|
-if (Next action?) then (Modify or extend)
+if (\n  Next action?  \n) then (Modify or extend)
   |PBMS API|
-  if (State and new availability valid?) then (Yes)
+  if (\n  State and new availability valid?  \n) then (Yes)
     :Update Pending booking or apply\neligible extension;
-    if (Additional fee required?) then (Yes)
+    if (\n  Additional fee required?  \n) then (Yes)
       :Create additional Pending payment;
     endif
   else (No)
     :Reject update; <<#FFCDD2>>
     stop
   endif
-elseif (Cancel)
+elseif (\n  Cancel  \n)
   |PBMS API|
-  if (Booking Pending or Confirmed?) then (No)
+  if (\n  Booking Pending or Confirmed?  \n) then (No)
     :Reject cancellation; <<#FFCDD2>>
     stop
   endif
@@ -312,9 +333,9 @@ endif
 
 |Booking Cleanup Worker|
 :Approximately every 5 minutes;
-if (Pending past payment deadline?) then (Yes)
+if (\n  Pending past payment deadline?  \n) then (Yes)
   :Set Booking = Expired;
-elseif (Confirmed past grace without check-in?) then (Yes)
+elseif (\n  Confirmed past grace without check-in?  \n) then (Yes)
   :Set Booking = NoShow;
 endif
 |Driver|
@@ -337,26 +358,33 @@ skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
 skinparam ArrowFontSize 42
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
+skinparam ConditionStyle inside
+skinparam ActivityDiamondFontSize 48
+skinparam ActivityDiamondFontStyle bold
+skinparam ActivityDiamondBackgroundColor #FFF2CC
+skinparam ActivityDiamondBorderColor #8A6D1D
 skinparam activity {
   BackgroundColor #F7F7F7
   BorderColor #454545
   DiamondBackgroundColor #FFF2CC
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
-  EndColor #2E7D32
+  EndColor #C62828
+  Padding 16
+  Margin 12
 }
 
 |Staff|
 start
 :Start gate check-in;
 |Gate UI and Camera|
-if (Camera available and permitted?) then (Yes)
+if (\n  Camera available and permitted?  \n) then (Yes)
   :Capture image and submit Base64 payload;
   |Plate Recognizer|
-  if (OCR returns candidates?) then (Yes)
+  if (\n  OCR returns candidates?  \n) then (Yes)
     :Return highest-confidence candidate;
   else (No)
     :Return OCR failure;
@@ -370,7 +398,7 @@ endif
 |PBMS API|
 :Normalize plate: uppercase and remove\nspaces, hyphens, and dots;
 :Resolve vehicle and eligible booking;
-if (Vehicle/card blacklisted?) then (Yes)
+if (\n  Vehicle/card blacklisted?  \n) then (Yes)
   :Reject check-in; <<#FFCDD2>>
   stop
 endif
@@ -384,16 +412,16 @@ if (Booking, building, vehicle type,\nand hierarchy valid?) then (No)
 endif
 |Allocation Service|
 :Select compatible active zone;
-if (Car requires concrete slot?) then (Yes)
+if (\n  Car requires concrete slot?  \n) then (Yes)
   :Select compatible non-conflicting slot;
-  if (Slot unavailable or conflicting?) then (Yes)
+  if (\n  Slot unavailable or conflicting?  \n) then (Yes)
     :Reject allocation; <<#FFCDD2>>
     stop
   endif
 else (No)
   :Use zone capacity without required slot;
 endif
-if (Effective capacity exceeded?) then (Yes)
+if (\n  Effective capacity exceeded?  \n) then (Yes)
   :Reject allocation; <<#FFCDD2>>
   stop
 endif
@@ -424,16 +452,23 @@ skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
 skinparam ArrowFontSize 42
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
+skinparam ConditionStyle inside
+skinparam ActivityDiamondFontSize 48
+skinparam ActivityDiamondFontStyle bold
+skinparam ActivityDiamondBackgroundColor #FFF2CC
+skinparam ActivityDiamondBorderColor #8A6D1D
 skinparam activity {
   BackgroundColor #F7F7F7
   BorderColor #454545
   DiamondBackgroundColor #FFF2CC
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
-  EndColor #2E7D32
+  EndColor #C62828
+  Padding 16
+  Margin 12
 }
 
 |Driver or Staff|
@@ -442,7 +477,7 @@ start
 |Web UI|
 :Send authenticated query;
 |PBMS API|
-if (Actor may access session?) then (No)
+if (\n  Actor may access session?  \n) then (No)
   :Reject unauthorized access; <<#FFCDD2>>
   stop
 endif
@@ -452,13 +487,13 @@ endif
 |Web UI|
 :Display session and estimate;
 |Driver or Staff|
-if (Extension requested?) then (No)
+if (\n  Extension requested?  \n) then (No)
   :Session viewed; <<#C8E6C9>>
   stop
 endif
 :Submit requested checkout time;
 |PBMS API|
-if (Session and extension eligible?) then (No)
+if (\n  Session and extension eligible?  \n) then (No)
   :Reject extension; <<#FFCDD2>>
   stop
 endif
@@ -468,13 +503,13 @@ endif
 |Pricing Engine|
 :Calculate additional fee;
 |PBMS API|
-if (Additional fee > 0?) then (Yes)
+if (\n  Additional fee > 0?  \n) then (Yes)
   :Create or replace Pending payment;
-  if (Online settlement selected?) then (Yes)
+  if (\n  Online settlement selected?  \n) then (Yes)
     |VNPay|
     :Return payment URL and verify result;
     |PBMS API|
-    if (Payment PAID?) then (No)
+    if (\n  Payment PAID?  \n) then (No)
       :Do not finalize extension; <<#FFCDD2>>
       stop
     endif
@@ -503,16 +538,23 @@ skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
 skinparam ArrowFontSize 42
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
+skinparam ConditionStyle inside
+skinparam ActivityDiamondFontSize 48
+skinparam ActivityDiamondFontStyle bold
+skinparam ActivityDiamondBackgroundColor #FFF2CC
+skinparam ActivityDiamondBorderColor #8A6D1D
 skinparam activity {
   BackgroundColor #F7F7F7
   BorderColor #454545
   DiamondBackgroundColor #FFF2CC
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
-  EndColor #2E7D32
+  EndColor #C62828
+  Padding 16
+  Margin 12
 }
 
 |Staff|
@@ -523,13 +565,13 @@ start
 |PBMS API|
 :Normalize detected plate;
 :Validate active session, plate, and card;
-if (Mismatch or lost-card condition?) then (Yes)
+if (\n  Mismatch or lost-card condition?  \n) then (Yes)
   :Route to exceptional checkout process;
   :Continue in Diagram 2.7; <<#FFECB3>>
   stop
 endif
 |Pricing Engine|
-if (APPLY_SEGMENTED_PRICING true?) then (Yes)
+if (\n  APPLY_SEGMENTED_PRICING true?  \n) then (Yes)
   :Select each segment by highest Priority,\nlatest EffectiveStart, then identifier;
 else (No)
   :Use non-segmented policy selected\nat check-in;
@@ -540,14 +582,14 @@ endif
 :Add Open or Processing incident penalties;
 |PBMS API|
 :Create payment and fail older Pending\npayments for this session;
-if (Payment method?) then (CASH)
+if (\n  Payment method?  \n) then (CASH)
   :Round by configured unit;
   :Set Payment = PAID synchronously;
 else (ONLINE_BANKING)
   |VNPay|
   :Return URL and signed result;
   |PBMS API|
-  if (Verified success applied once?) then (No)
+  if (\n  Verified success applied once?  \n) then (No)
     :Do not complete checkout or\nrelease resources; <<#FFCDD2>>
     stop
   endif
@@ -578,35 +620,42 @@ skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
 skinparam ArrowFontSize 42
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
+skinparam ConditionStyle inside
+skinparam ActivityDiamondFontSize 48
+skinparam ActivityDiamondFontStyle bold
+skinparam ActivityDiamondBackgroundColor #FFF2CC
+skinparam ActivityDiamondBorderColor #8A6D1D
 skinparam activity {
   BackgroundColor #F7F7F7
   BorderColor #454545
   DiamondBackgroundColor #FFF2CC
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
-  EndColor #2E7D32
+  EndColor #C62828
+  Padding 16
+  Margin 12
 }
 
 |Staff|
 start
 :Select exceptional operation;
-if (Operation?) then (Plate or card mismatch)
+if (\n  Operation?  \n) then (Plate or card mismatch)
   :Capture evidence and description;
   |PBMS API|
   :Create or update Incident;
   |Incident and Penalty Service|
   :Attach IncidentType and configured penalty;
-elseif (Unpaid exit)
+elseif (\n  Unpaid exit  \n)
   |PBMS API|
   :Mark session UNPAID;
   :Create Incident;
   |Card and Blacklist|
   :Create vehicle or card blacklist entry;
   :Release operational card and slot;
-elseif (Lost card)
+elseif (\n  Lost card  \n)
   |PBMS API|
   :Validate active session and card;
   |Card and Blacklist|
@@ -615,7 +664,7 @@ elseif (Lost card)
   |Incident and Penalty Service|
   :Create lost-card Incident and penalty;
   |Staff|
-  if (Replacement card supplied?) then (Yes)
+  if (\n  Replacement card supplied?  \n) then (Yes)
     |PBMS API|
     if (Replacement card available\nand not used/blocked?) then (No)
       :Reject replacement card; <<#FFCDD2>>
@@ -625,7 +674,7 @@ elseif (Lost card)
   endif
 else (Rollback checkout)
   |PBMS API|
-  if (Successful payment makes reversal unsafe?) then (Yes)
+  if (\n  Successful payment makes reversal unsafe?  \n) then (Yes)
     :Reject rollback; <<#FFCDD2>>
     stop
   else (No)
@@ -637,7 +686,7 @@ endif
 |Staff, Manager, or Admin|
 :Review incident or blacklist;
 |PBMS API|
-if (Authorized update or resolution?) then (No)
+if (\n  Authorized update or resolution?  \n) then (No)
   :Reject operation; <<#FFCDD2>>
   stop
 else (Yes)
@@ -662,16 +711,23 @@ skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
 skinparam ArrowFontSize 42
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
+skinparam ConditionStyle inside
+skinparam ActivityDiamondFontSize 48
+skinparam ActivityDiamondFontStyle bold
+skinparam ActivityDiamondBackgroundColor #FFF2CC
+skinparam ActivityDiamondBorderColor #8A6D1D
 skinparam activity {
   BackgroundColor #F7F7F7
   BorderColor #454545
   DiamondBackgroundColor #FFF2CC
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
-  EndColor #2E7D32
+  EndColor #C62828
+  Padding 16
+  Margin 12
 }
 
 |Staff, Manager, or Admin|
@@ -680,12 +736,12 @@ start
 |Web UI|
 :Submit filters and requested view;
 |PBMS API|
-if (Request type?) then (Active operations)
+if (\n  Request type?  \n) then (Active operations)
   |Operational Data|
   :Query active sessions, slots, cards,\nbookings, and incidents;
   |PBMS API|
   :Return actor-appropriate monitoring data;
-elseif (Revenue)
+elseif (\n  Revenue  \n)
   |Payment Data|
   :Select PAID payments only;
   :Resolve source through Booking\nor ParkingSession;
@@ -693,7 +749,7 @@ elseif (Revenue)
   |PBMS API|
   :Return dynamic revenue totals;\nTotalSubscriptions = 0;
 else (Audit log)
-  if (Authorized administrator?) then (No)
+  if (\n  Authorized administrator?  \n) then (No)
     :Reject audit query; <<#FFCDD2>>
     stop
   endif
@@ -1158,7 +1214,7 @@ Active payments must have a Booking or ParkingSession source. Dormant `MonthlySu
 
 | `APPLY_SEGMENTED_PRICING` | Selection behavior | Tie-breaking / cap behavior |
 |---|---|---|
-| Missing or false | One active policy at check-in governs selection. | Checkout-selected policy supplies the daily cap. |
+| False | One active policy at check-in governs selection. | Checkout-selected policy supplies the daily cap. |
 | True | Each segment selects the policy applicable at the segment boundary. | Highest Priority, latest EffectiveStart, then identifier; checkout-selected policy supplies the daily cap. |
 
 ### 4.6 Payment and Refund Rules

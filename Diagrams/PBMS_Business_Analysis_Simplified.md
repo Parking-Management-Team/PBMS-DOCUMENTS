@@ -17,15 +17,15 @@ This document presents review-friendly swimlane diagrams for the main PBMS busin
 ```plantuml
 @startuml
 title Registration and Authentication - Balanced Detail
-skinparam WrapWidth 250
-skinparam DefaultFontSize 40
+skinparam WrapWidth 650
+skinparam DefaultFontSize 44
 skinparam TitleFontSize 60
 skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
-skinparam ArrowFontSize 30
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam ArrowFontSize 36
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
 skinparam activity {
   BackgroundColor #F7F7F7
@@ -34,6 +34,8 @@ skinparam activity {
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
   EndColor #2E7D32
+  Padding 16
+  Margin 12
 }
 
 |Guest|
@@ -102,15 +104,15 @@ stop
 ```plantuml
 @startuml
 title Parking Structure, Pricing, and Configuration Management - Balanced Detail
-skinparam WrapWidth 250
-skinparam DefaultFontSize 40
+skinparam WrapWidth 400
+skinparam DefaultFontSize 44
 skinparam TitleFontSize 60
 skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
-skinparam ArrowFontSize 30
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam ArrowFontSize 36
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
 skinparam activity {
   BackgroundColor #F7F7F7
@@ -119,6 +121,8 @@ skinparam activity {
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
   EndColor #2E7D32
+  Padding 16
+  Margin 12
 }
 
 |Manager or Admin|
@@ -168,6 +172,15 @@ stop
 ```plantuml
 @startuml
 title Booking Lifecycle - Balanced Detail
+skinparam WrapWidth 500
+skinparam DefaultFontSize 50
+skinparam TitleFontSize 60
+skinparam TitleFontStyle bold
+skinparam SwimlaneTitleFontSize 60
+skinparam SwimlaneTitleFontStyle bold
+skinparam ArrowFontSize 44
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
 skinparam activity {
   BackgroundColor #F7F7F7
@@ -176,6 +189,8 @@ skinparam activity {
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
   EndColor #2E7D32
+  Padding 16
+  Margin 12
 }
 
 |Driver|
@@ -269,6 +284,14 @@ stop
 ```plantuml
 @startuml
 title Gate Check-in and Allocation - Balanced Detail
+skinparam DefaultFontSize 44
+skinparam TitleFontSize 60
+skinparam TitleFontStyle bold
+skinparam SwimlaneTitleFontSize 60
+skinparam SwimlaneTitleFontStyle bold
+skinparam ArrowFontSize 40
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
 skinparam activity {
   BackgroundColor #F7F7F7
@@ -277,6 +300,8 @@ skinparam activity {
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
   EndColor #2E7D32
+  Padding 16
+  Margin 12
 }
 
 |Staff|
@@ -332,6 +357,15 @@ stop
 ```plantuml
 @startuml
 title Session Query and Extension - Balanced Detail
+skinparam WrapWidth 650
+skinparam DefaultFontSize 44
+skinparam TitleFontSize 60
+skinparam TitleFontStyle bold
+skinparam SwimlaneTitleFontSize 60
+skinparam SwimlaneTitleFontStyle bold
+skinparam ArrowFontSize 36
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
 skinparam activity {
   BackgroundColor #F7F7F7
@@ -340,6 +374,8 @@ skinparam activity {
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
   EndColor #2E7D32
+  Padding 16
+  Margin 12
 }
 
 |Driver or Staff|
@@ -404,6 +440,15 @@ stop
 ```plantuml
 @startuml
 title Standard Checkout - Balanced Detail
+skinparam WrapWidth 650
+skinparam DefaultFontSize 44
+skinparam TitleFontSize 60
+skinparam TitleFontStyle bold
+skinparam SwimlaneTitleFontSize 60
+skinparam SwimlaneTitleFontStyle bold
+skinparam ArrowFontSize 36
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
 skinparam activity {
   BackgroundColor #F7F7F7
@@ -412,6 +457,8 @@ skinparam activity {
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
   EndColor #2E7D32
+  Padding 16
+  Margin 12
 }
 
 |Staff|
@@ -473,8 +520,8 @@ skinparam TitleFontStyle bold
 skinparam SwimlaneTitleFontSize 60
 skinparam SwimlaneTitleFontStyle bold
 skinparam ArrowFontSize 30
-skinparam Nodesep 100
-skinparam Ranksep 100
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
 skinparam activity {
   BackgroundColor #F7F7F7
@@ -483,6 +530,8 @@ skinparam activity {
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
   EndColor #2E7D32
+  Padding 16
+  Margin 12
 }
 
 |Staff|
@@ -544,6 +593,15 @@ stop
 ```plantuml
 @startuml
 title Monitoring, Revenue, and Audit - Balanced Detail
+skinparam WrapWidth 600
+skinparam DefaultFontSize 44
+skinparam TitleFontSize 60
+skinparam TitleFontStyle bold
+skinparam SwimlaneTitleFontSize 60
+skinparam SwimlaneTitleFontStyle bold
+skinparam ArrowFontSize 36
+skinparam Nodesep 160
+skinparam Ranksep 180
 skinparam shadowing false
 skinparam activity {
   BackgroundColor #F7F7F7
@@ -552,6 +610,8 @@ skinparam activity {
   DiamondBorderColor #8A6D1D
   StartColor #2E7D32
   EndColor #2E7D32
+  Padding 16
+  Margin 12
 }
 
 |Staff, Manager, or Admin|
