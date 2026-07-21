@@ -1888,6 +1888,109 @@ erDiagram
     VEHICLE_TYPE ||--o{ PRICING_CALCULATION_LOG : classifies
     PRICING_POLICY ||--o{ PRICING_CALCULATION_LOG : matched_by
 ```
+---
+
+# PBMS - Modular ERD Sub-Diagrams
+
+Tài liệu này tổng hợp 5 sơ đồ ERD phân hệ nhỏ (Sub-ERD) được tách ra từ sơ đồ tổng thể của hệ thống PBMS (Parking Building Management System).
+
+---
+
+## 1. Identity & Access Control ERD (Phân quyền & Quản lý Tài khoản)
+
+Sơ đồ tập trung vào phân quyền Role - Permission, tài khoản người dùng và nhật ký hoạt động hệ thống.
+
+```mermaid
+erDiagram
+    ROLE ||--o{ ACCOUNT : assigns
+    ROLE ||--o{ ROLE_PERMISSION : contains
+    PERMISSION ||--o{ ROLE_PERMISSION : grants
+    ACCOUNT o|--o{ AUDIT_LOG : generates
+```
+
+---
+
+## 2. Infrastructure & Vehicle Classification ERD (Hạ tầng Bãi đỗ & Loại xe)
+
+Sơ đồ thể hiện cấu trúc phân cấp vị trí bãi đỗ (Tòa nhà - Tầng - Khu vực - Chỗ đỗ) và việc phân loại phương tiện.
+
+```mermaid
+erDiagram
+    BUILDING ||--o{ FLOOR : contains
+    FLOOR ||--o{ ZONE : contains
+    ZONE ||--o{ PARKING_SLOT : contains
+    VEHICLE_TYPE ||--o{ ZONE : supports
+    VEHICLE_TYPE ||--o{ PARKING_SLOT : classifies
+    VEHICLE_TYPE ||--o{ VEHICLE : classifies
+    ACCOUNT o|--o{ VEHICLE : owns
+```
+
+---
+
+## 3. Booking & Parking Operations ERD (Đặt chỗ & Vận hành Phiên đỗ)
+
+Sơ đồ thể hiện luồng Đặt chỗ trước (Booking), Quét thẻ (Card) và Vận hành Phiên đỗ xe (Parking Session) tại cổng bãi đỗ.
+
+```mermaid
+erDiagram
+    ACCOUNT ||--o{ BOOKING : creates
+    VEHICLE ||--o{ BOOKING : booked_for
+    VEHICLE_TYPE ||--o{ BOOKING : snapshots_type
+    BUILDING ||--o{ BOOKING : requested_at
+    PARKING_SLOT o|--o{ BOOKING : optionally_reserves
+    BOOKING o|--o| PARKING_SESSION : converts_to
+
+    ACCOUNT o|--o{ PARKING_SESSION : checks_in
+    ACCOUNT o|--o{ PARKING_SESSION : checks_out
+    VEHICLE ||--o{ PARKING_SESSION : uses
+    BUILDING ||--o{ PARKING_SESSION : hosts
+    CARD ||--o{ PARKING_SESSION : identifies
+    ZONE o|--o{ PARKING_SESSION : allocates
+    PARKING_SLOT o|--o{ PARKING_SESSION : occupies
+```
+
+---
+
+## 4. Incident Management & Blacklist ERD (Sự cố & Danh sách đen)
+
+Sơ đồ thể hiện quy trình ghi nhận sự cố vi phạm, cấu hình phí phạt và cơ chế chặn Biển số / Thẻ (Blacklist).
+
+```mermaid
+erDiagram
+    INCIDENT_TYPE ||--o{ PENALTY_CONFIG : configures
+    PARKING_SESSION ||--o{ INCIDENT : has
+    INCIDENT_TYPE ||--o{ INCIDENT : classifies
+    PENALTY_CONFIG o|--o{ INCIDENT : prices
+    INCIDENT o|--o{ BLACKLIST : causes
+    VEHICLE o|--o{ BLACKLIST : blocks
+    CARD o|--o{ BLACKLIST : blocks
+```
+
+---
+
+## 5. Pricing Engine, Payment & Calculation Log ERD (Cấu hình Giá & Thanh toán)
+
+Sơ đồ thể hiện cấu hình bảng giá đa khung giờ (Pricing Policy/Rule/Config), thanh toán giao dịch (Payment) và log vết tính toán giá tiền.
+
+```mermaid
+erDiagram
+    VEHICLE_TYPE ||--o{ PRICING_POL~ICY : prices
+    PRICING_POLICY ||--o{ PRICING_WINDOW : contains
+    PRICING_POLICY ||--o{ PRICING_RULE : contains
+
+    PRICING_RULE ||--o| BASE_PRICING_RULE_CONFIG : configures
+    PRICING_RULE ||--o| INCREMENT_PRICING_RULE_CONFIG : configures
+    PRICING_RULE ||--o| DAILY_CAP_RULE_CONFIG : configures
+    PRICING_RULE ||--o| GRACE_PERIOD_RULE_CONFIG : configures
+
+    BOOKING o|--o{ PAYMENT : sources
+    PARKING_SESSION o|--o{ PAYMENT : sources
+    PRICING_POLICY o|--o{ PAYMENT : audits
+
+    VEHICLE_TYPE ||--o{ PRICING_CALCULATION_LOG : classifies
+    PRICING_POLICY ||--o{ PRICING_CALCULATION_LOG : matched_by
+```
+
 
 ### 9.1 Identity and Access
 

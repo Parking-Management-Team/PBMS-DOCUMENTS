@@ -1061,7 +1061,6 @@ erDiagram
   PARKING_SESSION ||--o{ PRICING_CALCULATION_LOG : prices
   PAYMENT o|--o{ PRICING_CALCULATION_LOG : commits
 ```
-
 ### 9.3 Logical And Physical Model
 
 #### 9.3.1 Modeling Rules
